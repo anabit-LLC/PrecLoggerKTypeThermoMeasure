@@ -5,7 +5,7 @@ channels. It also includes features like bipolar measurements, built-in current 
 measurements), programmable gain amp, built-in temperature sensor, and more. It is a great soluiton to make
 DC or low frequency measurements from precision sensors and transducers
 
-Product link: 
+Product link: https://anabit.co/products/precision-logger
 
 This example sketch demonstrates how to make a precision K-Type thermocouple measurement. It also utilizes the 
 ADC's on board temperatue sensor to serve as the cold jucntion compensation measurement. This sketch shows the 
