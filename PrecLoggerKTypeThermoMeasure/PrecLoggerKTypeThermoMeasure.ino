@@ -5,7 +5,7 @@ channels. It also includes features like bipolar measurements, built-in current 
 measurements), programmable gain amp, built-in temperature sensor, and more. It is a great soluiton to make
 DC or low frequency measurements from precision sensors and transducers
 
-Product link: 
+Product link: https://anabit.co/products/precision-logger
 
 This example sketch demonstrates how to make a precision K-Type thermocouple measurement. It also utilizes the 
 ADC's on board temperatue sensor to serve as the cold jucntion compensation measurement. This sketch shows the 
@@ -103,13 +103,13 @@ void loop() {
   discardFirstReadingDelayConTime(precLoggerConfig.convTime,precLoggerConfig.posMeasPin,precLoggerConfig.negMeasPin); //stsrt ADC, delay, and burn first reading
   delay(precLoggerConfig.convTime); //delay to let next conversion complete
   double measVolt = makeLoggerMeasurement(precLoggerConfig); //make a voltage measurement, scaled on gain settings
-  Serial.print("Measured thermocouple voltage: "); Serial.println(measVolt,6); // send voltage through serial
+  Serial.print("Measured thermocouple voltage: "); Serial.println(measVolt,8); // send voltage through serial
   //next we get the cold reference temperature measurement
   initLogger(tempSensorConfig); //reset ADC settings for temp sensor measurement
   discardFirstReadingDelayConTime(tempSensorConfig.convTime,tempSensorConfig.posMeasPin, tempSensorConfig.negMeasPin); //burn first ADC measurement
   delay(tempSensorConfig.convTime); //delay to let next conversion complete
   double tempSensor = makeLoggerMeasurement(tempSensorConfig); //make a voltage measurement of temp sensor
-  Serial.print("Measured internal temperture sensor voltage: "); Serial.println(tempSensor,6); // send voltage through serial
+  Serial.print("Measured internal temperture sensor voltage: "); Serial.println(tempSensor,8); // send voltage through serial
   tempSensor = convertVolt2IntTemperatureVal(tempSensor); //convert volt measurement to temperature
   Serial.print("Temperture internal sensor value: "); Serial.println(tempSensor,2); // send voltage through serial
   //finally we use our two measurements to calculate the measured K-Type thermocouple temperature
@@ -118,8 +118,17 @@ void loop() {
 
     if (isnan(tHot))
         Serial.println(F("Measured temperature value is out of range"));
-    else
-        Serial.print(F("Measured K-Type Thermocouple temperature: ")), Serial.println(tHot, 2);
+    else {
+        Serial.print(F("Measured K-Type Thermocouple temperature degrees C: ")), Serial.println(tHot, 2);
+        Serial.print(F("Measured K-Type Thermocouple temperature degrees F: ")), Serial.println(celsiusToFahrenheit(tHot), 2);
+    }
+        
+}
+
+// Convert Celsius to Fahrenheit
+double celsiusToFahrenheit(double tempC) {
+  double tempF = (tempC * 9.0 / 5.0) + 32.0;
+  return tempF;
 }
 
 //This function starts ADC1 (stops it first), delays for conversion time, 
